@@ -1,0 +1,128 @@
+{# 1ere+2eme questions #}
+<h3>Formations :</h3>
+<table border="2">
+<tr>
+
+    <td><h4>Ref</h4></td>
+    <td><h4>Titre</h4></td>
+    <td><h4>Description</h4></td>
+    <td><h4>Date de début</h4></td>
+    <td><h4>Date de fin</h4></td>
+    <td><h4>Nombre de participants</h4></td>
+
+</tr>
+{% for formation in f %}
+<tr>
+
+    <td>{{ formation.ref }}</td>
+    <td>{{ formation.Titre }}</td>
+    <td> {{ formation.Description }}</td>
+    <td> {{ formation.date_debut }}</td>
+    <td> {{ formation.date_fin }}</td>
+    <td>{{ formation.nb_participants }}</td>
+
+</tr>
+{% endfor %}
+</table>
+
+<hr>
+
+{# 3eme question #}
+<h3>Les titres des formations en majuscule :</h3>
+<table border="2">
+<tr>
+{% for formation in f %}
+<td>
+{{ formation.Titre|upper }}
+</td>
+{% endfor %}
+</tr>
+</table>
+
+<hr>
+
+{# 4eme question #}
+<h3>Le nombre des formations :</h3>
+{{f|length}}
+
+<hr>
+
+
+
+{# 6eme question #}
+
+<h3>Le titre de la formation ayant le plus grand nombre de participants :</h3>
+
+{% set max = 0 %}
+{% for formation in f %}
+{% if formation.nb_participants > max %}
+{% set max = formation.nb_participants %}
+{%endif%}
+{% endfor %}
+{% for formation in f %}
+{% if formation.nb_participants == max %}
+{{ formation.Titre}}
+{%endif%}
+{% endfor %}
+
+{# 7eme question #}
+<h3>Le nombre total de participants dans toutes les formations :</h3>
+{% set nb = 0 %}
+{% for formation in f %}
+{% set nb =nb + formation.nb_participants %}
+{% endfor %}
+<tr>
+<td>Nombre totale est : {{nb}}</td>
+</tr>
+<hr>
+
+{# 8eme question #}
+<h3>Ajouter une condition dans le cas où le tableau n’est pas défini et/ou vide :</h3>
+{% if not f is defined  %}
+Not Defined !!
+{%elseif f is empty%}
+Le tableau est vide 
+{%else%}
+Le tableau contient des formation
+{% endif %}
+<hr>
+
+{ #9eme+10eme questions #}
+<h3>Ajouter un bouton, participer, devant la formation ayant aucun participant :</h3>
+<table border="2">
+    <thead>
+        <tr>
+            <th>Titre</th>
+            <th>Description</th>
+            <th>Date de début</th>
+            <th>Date de fin</th>
+            <th>Nombre de participants</th>
+            <th>participation</th>
+        </tr>
+    </thead>
+    <tbody>
+        {%for formation in f %}
+        {% if formation.nb_participants!=0 %}
+            <tr>
+                <td>{{ formation.Titre}}</td>
+                <td>{{ formation.Description }}</td>
+                <td>{{ formation.date_debut }}</td>
+                <td>{{ formation.date_fin }}</td>
+                <td>{{ formation.nb_participants }}</td>
+                <td></td>
+            </tr>
+        {%else %}
+            <tr>
+                <td>{{ formation.Titre}}</td>
+                <td>{{ formation.Description }}</td>
+                <td>{{ formation.date_debut }}</td>
+                <td>{{ formation.date_fin }}</td>
+                <td>{{ formation.nb_participants }}</td>
+                <td><a href="{{ path('detailName', {'nom': formation.Titre}) }}">Participer</a></td>
+            </tr>
+{%endif%}
+{%endfor%}
+</tbody>
+</table>
+<hr>
+
